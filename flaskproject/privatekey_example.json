@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "project_id_from_gee_does_here",
+  "private_key_id": "long_random_looking_string_numbers_letters",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nVERY_LONG_STRING_GOES_HERE\n-----END PRIVATE KEY-----\n",
+  "client_email": "email_associated_with_your_gee_service_account",
+  "client_id": "A string that consists of numbers",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "url_to_gee_project_on_gcp_with_service_account_certs"
+}
