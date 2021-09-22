@@ -21,17 +21,7 @@ Under the hood, this API leverages a moderately complex API, Google Earth Engine
 Mostly Python with a little JavaScript and HTML.
 
 ## LICENSE
---- PUT LINK TO LICENSE HERE ---
-
-## Warning Label
---- REMOVE WHEN PUSHED TO PUBLIC REPO ON GITHUB.COM ---
-
-"This software may be subject to U.S. export control restrictions, and it is provided "as is" without any warranty, express, or implied and that the recipient waives any claims against, and indemnifies and holds harmless, NASA and its contractors and subcontractors " .
-
-"Please note by using developer.nasa.gov to access this code repository you are aknowledging and consenting to the following statements on the developer.nasa.gov warning banner page that apply to any code repository stored on developer.nasa.gov."
-
---- REMOVE WHEN PUSHED TO PUBLIC REPO ON GITHUB.COM ---
-
+Apache 2.0
 
 
 ## Contributions
