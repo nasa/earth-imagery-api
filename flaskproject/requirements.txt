@@ -14,7 +14,7 @@ cycler==0.10.0
 decorator==4.4.2
 defusedxml==0.6.0
 distlib==0.3.0
-Django==3.1.12
+# Django==3.1.12
 earthengine-api==0.1.231
 entrypoints==0.3
 Flask==1.1.2
@@ -70,7 +70,7 @@ python-dateutil==2.8.1
 pytz==2019.3
 pyzmq==18.1.1
 requests==2.23.0
-rsa==4.7
+# rsa==4.7
 Send2Trash==1.5.0
 six==1.14.0
 sqlparse==0.3.1
@@ -79,7 +79,7 @@ testpath==0.4.4
 tornado==6.0.4
 traitlets==4.3.3
 uritemplate==3.0.1
-urllib3==1.26.5
+# urllib3==1.26.5
 wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==1.0.1

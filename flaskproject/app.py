@@ -83,7 +83,7 @@ if('var' in files):
 #### Alternatively, you can start with the service account
 #### The service account is tied to a google app engine project that justin.c.gosses@nasa.gov started. 
 ##### Anyone in the OCIO data analytics project on GCP should have access to it.
-service_account = 'earthengineforapinasagov@earthengineforapinasagov.iam.gserviceaccount.com'
+service_account = 'idas-google-earth-admin@dotted-furnace-431819-e9.iam.gserviceaccount.com'
 credentials = ee.ServiceAccountCredentials(service_account, json_url)
 ee.Initialize(credentials)
 
