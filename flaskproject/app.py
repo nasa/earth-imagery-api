@@ -7,26 +7,13 @@
 #    @author=JustinGOSSES @email=justin.c.gosses@nasa.gov
 #
 #    It basically is a simplified wrapper for google earth engine and only gets images from landsat 8
+#
+#    Migrated to Landsat Collection 2 by Daniel C. Rendon(daniel.c.rendon@nasa.gov)
 #"""
-
-#### THIS IS THE ORIGINAL DEMO FLASK APP THAT IS KEPT HERE FOR TESTING PURPOSES
-#### IF YOU NEED TO TEST IF EVERYTHING ELSE IS SET UP WELL LIKE APACHE USE THIS!
-# from flask import Flask
-#app = Flask(__name__)
-#
-#@app.route('/')
-#def hello_world():
-#	return 'Hello, World! darn it'
-#
-#if __name__ == "__main__":
-#    app.run()
-#### END OF :::::ORIGINAL DEMO FLASK APP THAT IS KEPT HERE FOR TESTING PURPOSES
 
 import os
 import sys
 
-### justin edit
-#sys.path.insert(0, "../lib")
 sys.path.insert(0, ".")
 sys.path.insert(1, "/var/www/html/flaskproject")
 sys.path.insert(2,'..')
@@ -35,9 +22,6 @@ from flask import request, jsonify, render_template, Response, Flask, send_file,
 from flask_cors import CORS
 from datetime import datetime
 
-#### THIS IS AN ALTERNATIVE WAY TO BRING IN UTIL.py that doesn't work WHEN STARTED VIA APACHE SERVER
-# import util
-#from util import *
 import util
 import json
 import requests
@@ -105,19 +89,9 @@ def _abort(code, msg, usage=True):
 
 
 # def _earth_image_handler(lat=None, lon=None, dataset='LC8_L1T_TOA', date='2014-01-01', cloud=False, dim=0.025):
-def _earth_image_handler(lat=None, lon=None, dataset='LANDSAT/LC08/C01/T1_SR', date='2014-01-01', cloud=False, dim=0.025):
+def _earth_image_handler(lat=None, lon=None, dataset='LANDSAT/LC08/C02/T1_L2', date='2014-01-01', cloud=False, dim=0.025):
 
     LOG.info("Earth Image Handler called")
-
-    '''
-    params = {
-        'cloud_score': cloud,
-        'lon': float(lon),
-        'lat': float(lat),
-        'date': date,
-        'dim': float(dim)
-    }
-    '''
 
     resource = {'planet': 'earth', 'dataset': dataset}
     bbox = {
@@ -143,38 +117,6 @@ def _earth_image_handler(lat=None, lon=None, dataset='LANDSAT/LC08/C01/T1_SR', d
     
     LOG.debug("return result") 
     return res
-
-
-'''
-class EarthListHandler(webapp2.RequestHandler):
-    """Class to construct the input for grabbing earth imagery.  Returns a
-    JSON object with the URLs of the returned image thumbnails."""
-    
-    def get(self):
-        lat = self.request.get('lat', None)
-        lon = self.request.get('lon', None)
-        if (lat is None and lon is None):
-            default_address = '1800 F street, Washington, DC, NW'
-            address = self.request.get('address', default_address)
-            lat, lon = util.geocode(address)
-        dataset = self.request.get('dataset', 'LC8_L1T_TOA')
-        begin = self.request.get('begin')
-        end = self.request.get('end', datetime.today().strftime("%Y-%m-%d"))
-        dim = self.request.get('dim', 0.025)
-        params = {
-            'resource': {
-                'planet': 'earth',
-                'dataset': dataset
-            },
-            'lon': float(lon),
-            'lat': float(lat),
-            'begin': begin,
-            'end': end,
-            'dim': float(dim)
-        }
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(util.asset_list(params)))
-    '''
 
 
 def _usage(joinstr="', '", prestr="'"):
@@ -223,10 +165,7 @@ def get_earth_assets():
             lat = float(lat)
             lon = float(lon)
         
-        #dataset = args.get('dataset', 'LC8_L1T_TOA')
-        dataset = args.get('dataset', 'LANDSAT/LC08/C01/T1_SR')
-        
-        # date = '2014-01-01'
+        dataset = args.get('dataset', 'LANDSAT/LC08/C02/T1_L2')
         cloud = bool(args.get('cloud_score', False))
         dim = float(args.get('dim', 0.025))
 
@@ -240,7 +179,6 @@ def get_earth_assets():
     except Exception as ex:
 
         etype = type(ex)
-        # print (str(etype)+"\n "+str(ex))
         if etype == ValueError or "BadRequest" in str(etype):
             LOG.error("Bad request. Msg: " + str(ex))
             return _abort(400, str(ex) + ".")
@@ -275,7 +213,7 @@ def get_earth_image():
             lat = float(lat)
             lon = float(lon)
         
-        dataset = args.get('dataset', 'LANDSAT/LC08/C01/T1_SR')
+        dataset = args.get('dataset', 'LANDSAT/LC08/C02/T1_L2')
         
         cloud = bool(args.get('cloud_score', False))
         dim = float(args.get('dim', 0.025))
