@@ -17,7 +17,6 @@ def geocode(address):
     address = address.replace(' ', '+')
     address = address.replace('%20', '+')
     raw = requests.get(address).text
-    # raw = urlfetch.fetch(base + address)
     res = json.loads(raw.content)
     coords = res['results'][0]['geometry']['location']
     return coords['lat'], coords['lng']
@@ -64,10 +63,9 @@ def bbox_to_coords(bbox):
             [xmax, ymin],
             [xmax, ymax]]
 
-
+# This function is not called in the code, keeping it here for reference
 def hsvpan(img):
     """Accepts a GEE image objects and returns a pan-sharpened GEE image."""
-    #r, g, b, p = ['B6', 'B5', 'B4', 'B8']
     r, g, b, p = ['B3', 'B5', 'B4', 'B6']
     color = img.select(r, g, b).unitScale(0, 155)
     pan = img.select(p)
@@ -89,25 +87,7 @@ def cloudScore(landsat_img, coords, thresh=25):
     scores = ee.Algorithms.Landsat.simpleCloudScore(landsat_img)
     binary = scores.select('cloud').clip(poly).gt(thresh)
     print("binary",binary,"type",type(binary))
-    # res = binary.reduceRegion(ee.Reducer.mean(), geom, 25).getInfo()
-    #res = binary.reduceRegion(ee.Reducer.mean(),30}).getInfo()
     res = binary.reduceRegion(ee.Reducer.mean(), geom, 25)
-
-    # cloudy_scene = landsat_img
-    # ## Load a cloudy Landsat scene and display it.
-    # # var cloudy_scene = ee.Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140926');
-    # #### Add a cloud score band.  It is automatically called 'cloud'.
-    # scored = ee.Algorithms.Landsat.simpleCloudScore(cloudy_scene)
-    # #### Create a mask from the cloud score and combine it with the image mask.
-    # mask = scored.select(['cloud']).lte(20)
-    # #### Apply the mask to the image and display the result.
-    # masked = cloudy_scene.updateMask(mask)
-    # #### Load a Landsat 8 composite and set the SENSOR_ID property.
-    # mosaic = ee.Image(ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').first()).set('SENSOR_ID', 'OLI_TIRS')
-    # #### Cloud score the mosaic and display the result.
-    # scored_mosaic = ee.Algorithms.Landsat.simpleCloudScore(mosaic)
-
-
     try:
         print("res: ",res)
         return float(res['cloud'])
@@ -131,63 +111,29 @@ def export_image(idx, coords, cloud_score):
             sharpen=True
         )
     """
-    #img = hsvpan(ee.Image(idx))
-    #img = hsvpan(ee.Image('USGS/SRTMGL1_003'))
-    # img = ee.Image('LANDSAT/LC08/C01/T1_SR')
-    #img = ee.Image('USGS/SRTMGL1_003') ## THIS WORKS!
     print("idx is ",idx)
     print("type idx is ",type(idx))
-    # img = ee.Image(idx)
 
-
-    
-    
-    # thumb_params = {
-    #     'crs': 'EPSG: 4326',
-    #     'region': str(coords),
-    #     # 'size': [512, 512],
-    #     'dimensions': [512, 512],
-    #     'format': 'png',
-    #     'min': '0.01',
-    #     'max': '0.5',
-    #     'gamma': '1.7'
-    # }
-    # http://127.0.0.1:5000/v5000/earth/imagery/?lon=100.75&lat=40.5&date=2017-01-01
-    # https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/thumbnails/583ba3a19b4fe932cedf847dad7cdf9a-ecb5736d2f3ed4461af711493dcca7ae:getPixels
-
-    ## houston example http://127.0.0.1:5000/v5000/earth/imagery/?lon=-95&lat=29.7&date=2018-07-01&dim=0.3
     thumb_params = {
-        'crs': 'EPSG: 4326',
+        # 'crs': 'EPSG: 4326',
         'region': str(coords),
         #'size': [512, 512],
         'dimensions': [2048, 2048],
         'format': 'png',
         'min': 0,
-        'max': 3200,
+        # 'max': 3200,
     }
     
-    # dataset = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterDate('2016-01-01', '2016-01-10')
-    # print("dataset",dataset)
-    # image_test = dataset.median()
-    
-    dataset = ee.Image(idx) #.filterDate('2016-01-01', '2016-01-10')
-    #dataset = hsvpan(ee.Image(idx))
+    dataset = ee.Image(idx)
     print("dataset",dataset)
-    image_test = dataset #.median()
-
-
-    #final = dict(url=img.getThumbUrl(thumb_params))
-    # final = dict(url = img.getThumbUrl({'min': 0, 'max': 4000, 'dimensions': 512,
-    #             'palette': ['006633', 'E5FFCC', '662A00', 'D8D8D8', 'F5F5F5']}))
+    image_test = dataset
     print("cloud score in export image function is: ",cloud_score)
-    #final = dict(url = img.getThumbUrl(thumb_params ))
     final2 = dict(url = image_test.getThumbUrl(thumb_params ))
 
     if cloud_score:
         print("hit cloud_scoure exists:",cloud_score)
         print("type ee.Image(idx)",type(image_test))
         print("idx",idx)
-        #final2["cloud_score"] = "test"
         final2["cloud_score"] = cloudScore(idx, coords)
     return final2
 
@@ -210,8 +156,7 @@ class GEEasset:
         collection defined by the asset and the geographic extent"""
         self.coords = bbox_to_coords(bbox)
         self.poly = ee.Geometry.Polygon(self.coords)
-        # self.coll = ee.ImageCollection('LANDSAT/LC08').filterBounds(self.poly)
-        self.coll = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterBounds(self.poly)
+        self.coll = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').filterBounds(self.poly)
 
     def id_stack(self, begin, end):
         """Returns the a dictionary with the acquisition date as the key and
@@ -227,7 +172,6 @@ class GEEasset:
         target_date = datetime.strptime(date, "%Y-%m-%d")
         delta = timedelta(days=offset)
         available = self.id_stack(target_date - delta, target_date + delta)
-        # available = self.coll
         if len(available) == 0:
             raise NotFoundError('No imagery for specified date.')
         else:

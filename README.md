@@ -149,20 +149,6 @@ This API itself has endpoints with the syntax: `v5000/earth/imagery/` and `v5000
 - `lon` A float variable that indicates the longitude of the centroid of each image in the image stack.
 - `dim` The dimension of the square image in degrees (float).
 
-
-
-<!-- ##### NOTE: the previous version of this API had slightly different queries. If you'd like to submit a pull request to bring back the old query behavior in addition to the new, please do.
-
-**OLD Fields**
-
-- `begin` A date in YYYY-MM-DD format indicating the beginning of the period of the image stack.
-- `end` A date in YYYY-MM-DD format indicating the end of the period of the image stack.
-- `lat` A float variable that indicates the latitude of the centroid of each image in the image stack.
-- `lon` A float variable that indicates the longitude of the centroid of each image in the image stack.
-- `dataset` One of two strings that indicates the NASA data set that is available within this API, either LC8_L1T_TOA (Landsat 8) or LE7_L1T_8DAY_RAW (Landsat 7, eight-day composites).
-- `dim` The dimension of the square image in degrees (float).
-- `size` A string (small, medium, or large) indicating the size in pixels of the returned image.
- -->
 **Returned object**
 
 The returned object is a stack of images with the specified location, dimension, and date range.  The keys are the date of acquisition that occurred in the date range and the values are the persistent URLs of the images.
