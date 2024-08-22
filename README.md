@@ -1,7 +1,7 @@
 # Earth-Imagery-API
 
 ## Description
-This repository contains a flask API that provides satellite imagery. It is designed to be very simple and easy to use with minimal functionality and is provided to the public through api.nasa.gov. It focuses on one Earth imagery product, Landsat 8.
+This repository contains a flask API that provides satellite imagery. It is designed to be very simple and easy to use with minimal functionality and is provided to the public through api.nasa.gov. It focuses on one Earth imagery product, Landsat 8 collection 2.
 
 #### Purpose
 While there are many ways NASA and other government agencies provide satellite imagery to the public, these are often more fully featured and as a result more complex to use. This API is built to have a very basic intuitive interface and to be found easily on api.nasa.gov. It is designed for those just getting started with satellite imagery and APIs. It can server as a first step to using more complex imagery services.
