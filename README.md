@@ -1,5 +1,7 @@
 # Earth-Imagery-API
 
+#### <h3><strong>⚠ Please Note:</strong> The <a href="https://api.nasa.gov#earth">Earth API</a> and this repository will be archived and replaced with <a href="https://www.earthdata.nasa.gov/">https://www.earthdata.nasa.gov/</a> soon. Please update your bookmarks or projects as needed.</h3>
+
 ## Description
 This repository contains a flask API that provides satellite imagery. It is designed to be very simple and easy to use with minimal functionality and is provided to the public through api.nasa.gov. It focuses on one Earth imagery product, Landsat 8 collection 2.
 
